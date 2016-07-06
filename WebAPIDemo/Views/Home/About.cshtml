@@ -1,0 +1,47 @@
+﻿@{
+    ViewBag.Title = "About";
+}
+<h2>@ViewBag.Title.</h2>
+<h3>@ViewBag.Message</h3>
+
+ 
+@*Loading image*@
+<div id='loadingmessage' >
+    <img src='http://digitalsynopsis.com/wp-content/uploads/2015/10/gif-icons-menu-transition-animations-eatstreet-loading.gif' />
+</div>
+
+@*Outputing data into the following div*@
+<div id="coffeeData"></div>
+
+@*Adding arbitrary javascript code*@
+@section script
+{
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script>
+        $('#loadingmessage').show();  // show the loading message.
+        //We need to get the data and display it
+        $.ajax({
+            //From where we want to take information
+            url: "http://localhost:5710/api/coffees",
+            //This is the type of http command that we are making (get/post/delete/put)
+            type: "Get",
+
+        //Telling the system "if the data comes correctly then go to success method else go to error method"
+        success: function(data)
+        {
+            for(var i =0; i< data.length; i++)
+
+                //Appending (adding/displaying to div with id "coffeeData") the content to the database in a formated way.
+                $('#coffeeData').append("<p>Name: " + data[i].Name + " " + data[i].Volume + "</p>");
+            $('#loadingmessage').hide(); // hide the loading message
+        },
+
+        error: function (msg)
+        {
+            alert(msg);
+        }
+
+     });
+    </script>
+}
